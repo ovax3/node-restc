@@ -28,3 +28,15 @@ module.exports = function (handlers, next) {
   return next();
 };
 
+module.exports.formatter = function (handlers, next) {
+  handlers.before.push(formatter);
+
+  return next();
+};
+
+module.exports.parser = function (handlers, next) {
+  handlers.after.push(parser);
+
+  return next();
+};
+
