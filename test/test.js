@@ -1,23 +1,15 @@
 var restc = require('../lib/index');
 
-var google = restc({
-  defaults: {
-    url: 'http://www.google.fr',
-    headers: {
-    }
+var google = restc(
+  {
+    url: 'http://www.google.fr'
   },
-  setup: [
-    require('../lib/url-parser')
-  ],
-  before: [
-    require('../lib/request-logger'),
-    require('../lib/raw-formatter')
-  ],
-  after: [
-    require('../lib/raw-parser'),
-    require('../lib/response-logger')
+  [
+    require('../lib/url'),
+    require('../lib/raw'),
+    require('../lib/logger')
   ]
-});
+);
 
 google.get('/', function (err, res) {
 });
