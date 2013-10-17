@@ -4,7 +4,8 @@ var process = require('./process');
 var noop = function () {};
 
 var Client = function (defaults, plugins) {
-  this.defaults = defaults || {};
+  this.defaults = defaults || { };
+  this.defaults.path = this.defaults.path || '';
   this.defaults.headers = this.defaults.headers || {};
 
   this.handlers = { setup: [], before: [], after: [] };
@@ -29,19 +30,17 @@ Client.prototype.del = function (path, callback) {
   return this.request({ method: 'DELETE', path: path }, callback);
 };
 
-Client.prototype.request = function (config, callback) { var self = this;
-  config.path = this.defaults.path + config.path;
-  config.headers = config.headers || {};
+Client.prototype.request = function (options, callback) { var self = this;
+  options.path = this.defaults.path + options.path;
+  options.headers = options.headers || {};
   for (var k in this.defaults.headers) {
-    if (!config.headers.hasOwnProperty(k)) config.headers[k] = this.defaults.headers[k];
+    if (!options.headers.hasOwnProperty(k)) options.headers[k] = this.defaults.headers[k];
   };
-  config.__proto__ = this.defaults;
-  process(config, this.handlers.before, function (err) {
+  options.__proto__ = this.defaults;
+  process(options, this.handlers.before, function (err) {
     if (err) return callback(err);
 
-    var req = http.request(config, function(res) {
-      res.config = config;
-      res.req = req;
+    var req = http.request(options, function(res) {
       res.setEncoding('utf8');
       var body = '';
       res.on('data', function (chunck) {
@@ -52,7 +51,7 @@ Client.prototype.request = function (config, callback) { var self = this;
         process(res, self.handlers.after, function (err) {
           if (err) return callback(err);
 
-          return callback(null, res);
+          return callback(null, req, res);
         });
       });
     });
@@ -61,8 +60,8 @@ Client.prototype.request = function (config, callback) { var self = this;
       return callback(err);
     });
 
-    if (config.body) {
-      req.write(config.body);
+    if (options.body) {
+      req.write(options.body);
     }
     req.end();
   });
