@@ -41,6 +41,7 @@ Client.prototype.request = function (options, callback) { var self = this;
     if (err) return callback(err);
 
     var req = http.request(options, function(res) {
+      res.options = options;
       res.setEncoding('utf8');
       var body = '';
       res.on('data', function (chunck) {

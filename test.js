@@ -8,7 +8,20 @@ var server = http.createServer(function (req, res) {
   res.end('Hello World');
 });
 
-var client = restc({ port: 1337 });
+var client = restc({ port: 1337 },
+  function (handlers, next) {
+    handlers.before.push(function (options, next) {
+      options.foo = true;
+
+      return next();
+    });
+    handlers.after.push(function (res, next) {
+      res.bar = true;
+
+      return next();
+    });
+  }
+);
 
 server.listen(1337, '127.0.0.1', function () {
   console.log('Server running at http://127.0.0.1:1337');
@@ -17,6 +30,8 @@ server.listen(1337, '127.0.0.1', function () {
     if (err) throw err;
     console.log(res.body);
     assert(res.body == 'Hello World');
+    assert(res.options.foo == true);
+    assert(res.bar == true);
     process.exit();
   });
 
