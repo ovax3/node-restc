@@ -1,5 +1,29 @@
 {
   "name": "restc",
   "version": "0.1.2",
-  "main": "index.js"
+  "description": "minimal framework to compose RESTful clients",
+  "keywords": [
+    "rest",
+    "restful",
+    "client",
+    "composition"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neo9/node-rest-mount.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neo9/node-rest-mount/issues"
+  },
+  "licences": {
+    "type": "MIT"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "author": "ovmjm <ov@annexe3.com>"
 }
