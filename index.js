@@ -1,5 +1,18 @@
 var http = require('http');
-var process = require('./process');
+
+var process = function (obj, processors, callback, i) {
+  if (i == processors.length) return callback(null);
+
+  var processor = processors[i];
+
+  var next = function (err) {
+    if (err) return callback(err);
+
+    process(obj, processors, callback, i + 1);
+  };
+
+  processor(obj, next);
+};
 
 var Client = function (defaults, plugins) {
   this.defaults = defaults || { };
@@ -15,7 +28,7 @@ var Client = function (defaults, plugins) {
     after: plugins.map(function (p) { return p.after; }).filter(defined)
   };
 
-  process(this.defaults, setup, noop);
+  process(this.defaults, setup, noop, 0);
 };
 
 Client.prototype.post = function (path, data, callback) {
@@ -57,7 +70,7 @@ Client.prototype.request = function (options, callback) { var self = this;
           if (err) return callback(err);
 
           return callback(null, req, res);
-        });
+        }, 0);
       });
     });
 
@@ -69,7 +82,7 @@ Client.prototype.request = function (options, callback) { var self = this;
       req.write(options.body);
     }
     req.end();
-  });
+  }, 0);
 };
 
 module.exports = function (options) {
