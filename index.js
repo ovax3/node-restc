@@ -1,17 +1,23 @@
 var http = require('http');
 var process = require('./process');
 
-var noop = function () {};
-
 var Client = function (defaults, plugins) {
+  plugins = plugins || [];
+
   this.defaults = defaults || { };
   this.defaults.path = this.defaults.path || '';
   this.defaults.headers = this.defaults.headers || {};
 
-  this.handlers = { setup: [], before: [], after: [] };
-  process(this.handlers, plugins, noop);
+  var noop = function () {};
+  var defined = function (x) { return x !== undefined; };
 
-  process(this.defaults, this.handlers.setup, noop);
+  var setup = plugins.map(function (p) { return p.setup; }).filter(defined);
+  this.handlers = {
+    before: plugins.map(function (p) { return p.before; }).filter(defined),
+    after: plugins.map(function (p) { return p.after; }).filter(defined)
+  };
+
+  process(this.defaults, setup, noop);
 };
 
 Client.prototype.post = function (path, data, callback) {

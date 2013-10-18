@@ -9,17 +9,15 @@ var server = http.createServer(function (req, res) {
 });
 
 var client = restc({ port: 1337 },
-  function (handlers, next) {
-    handlers.before.push(function (options, next) {
+  {
+    before: function (options, next) {
       options.foo = true;
-
       return next();
-    });
-    handlers.after.push(function (res, next) {
+    },
+    after: function (res, next) {
       res.bar = true;
-
       return next();
-    });
+    }
   }
 );
 
