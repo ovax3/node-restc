@@ -2,8 +2,6 @@ var http = require('http');
 var process = require('./process');
 
 var Client = function (defaults, plugins) {
-  plugins = plugins || [];
-
   this.defaults = defaults || { };
   this.defaults.path = this.defaults.path || '';
   this.defaults.headers = this.defaults.headers || {};
@@ -74,10 +72,7 @@ Client.prototype.request = function (options, callback) { var self = this;
   });
 };
 
-module.exports = function (defaults) {
-  var plugins = Array.prototype.slice.call(arguments);
-  plugins.shift();
-
-  return new Client(defaults, plugins);
+module.exports = function (options) {
+  return new Client(options, Array.prototype.slice.call(arguments, 1));
 };
 
