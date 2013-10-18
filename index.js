@@ -10,10 +10,8 @@ var Client = function (defaults, plugins) {
   var defined = function (x) { return x !== undefined; };
 
   var setup = plugins.map(function (p) { return p.setup; }).filter(defined);
-  this.handlers = {
-    before: plugins.map(function (p) { return p.before; }).filter(defined),
-    after: plugins.map(function (p) { return p.after; }).filter(defined)
-  };
+  this.before = plugins.map(function (p) { return p.before; }).filter(defined);
+  this.after = plugins.map(function (p) { return p.after; }).filter(defined);
 
   aes.one(this.defaults, setup, noop);
 };
@@ -41,7 +39,7 @@ Client.prototype.request = function (options, callback) { var self = this;
     if (!options.headers.hasOwnProperty(k)) options.headers[k] = this.defaults.headers[k];
   };
   options.__proto__ = this.defaults;
-  aes.one(options, this.handlers.before, function (err) {
+  aes.one(options, this.before, function (err) {
     if (err) return callback(err);
 
     var req = http.request(options, function(res) {
@@ -52,7 +50,7 @@ Client.prototype.request = function (options, callback) { var self = this;
       });
       res.on('end', function () {
         res.body = body;
-        aes.two(req, res, self.handlers.after, function (err) {
+        aes.two(req, res, self.after, function (err) {
           if (err) return callback(err);
 
           return callback(null, req, res);
