@@ -25,5 +25,8 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "author": "ovmjm <ov@annexe3.com>"
+  "author": "ovmjm <ov@annexe3.com>",
+  "dependencies": {
+    "aesn": "~0.1.0"
+  }
 }

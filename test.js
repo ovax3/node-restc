@@ -14,7 +14,7 @@ var client = restc({ port: 1337 },
       options.foo = true;
       return next();
     },
-    after: function (res, next) {
+    after: function (req, res, next) {
       res.bar = true;
       return next();
     }
@@ -28,7 +28,7 @@ server.listen(1337, '127.0.0.1', function () {
     if (err) throw err;
     console.log(res.body);
     assert(res.body == 'Hello World');
-    assert(res.options.foo == true);
+    assert(req.options.foo == true);
     assert(res.bar == true);
     process.exit();
   });
