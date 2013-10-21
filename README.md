@@ -27,3 +27,10 @@ Usage
       /* ... */
     });
 
+Available Plugins
+-----------------
+
+* [restc-url](https://github.com/ovmjm/node-restc-url)
+* [restc-log](https://github.com/ovmjm/node-restc-log)
+* [restc-json](https://github.com/ovmjm/node-restc-json)
+
