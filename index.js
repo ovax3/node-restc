@@ -34,6 +34,7 @@ Client.prototype.del = function (path, callback) {
 
 Client.prototype.request = function (options, callback) { var self = this;
   options.path = this.defaults.path + options.path;
+  options.body = options.data;
   options.headers = options.headers || {};
   for (var k in this.defaults.headers) {
     if (!options.headers.hasOwnProperty(k)) options.headers[k] = this.defaults.headers[k];
