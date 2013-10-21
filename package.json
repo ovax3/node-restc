@@ -10,10 +10,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/neo9/node-rest-mount.git"
+    "url": "https://github.com/neo9/node-restc.git"
   },
   "bugs": {
-    "url": "https://github.com/neo9/node-rest-mount/issues"
+    "url": "https://github.com/neo9/node-restc/issues"
   },
   "licences": {
     "type": "MIT"
