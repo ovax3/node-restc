@@ -53,7 +53,7 @@ Client.prototype.request = function (options, callback) { var self = this;
         aes.two(req, res, self.after, function (err) {
           if (err) return callback(err);
 
-          return callback(null, req, res);
+          return callback(null, req, res, res.body);
         });
       });
     });
