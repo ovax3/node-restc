@@ -34,7 +34,6 @@ Client.prototype.del = function (path, callback) {
 
 Client.prototype.request = function (options, callback) { var self = this;
   options.path = this.defaults.path + options.path;
-  options.body = options.data;
   options.headers = options.headers || {};
   for (var k in this.defaults.headers) {
     if (!options.headers.hasOwnProperty(k)) options.headers[k] = this.defaults.headers[k];
@@ -45,16 +44,16 @@ Client.prototype.request = function (options, callback) { var self = this;
 
     var req = http.request(options, function(res) {
       res.setEncoding('utf8');
-      var body = '';
+      var data = '';
       res.on('data', function (chunck) {
-        body += chunck;
+        data += chunck;
       });
       res.on('end', function () {
-        res.body = body;
+        res.data = data;
         aes.two(req, res, self.after, function (err) {
           if (err) return callback(err);
 
-          return callback(null, req, res, res.body);
+          return callback(null, req, res, res.data);
         });
       });
     });
@@ -64,8 +63,8 @@ Client.prototype.request = function (options, callback) { var self = this;
       return callback(err);
     });
 
-    if (options.body) {
-      req.write(options.body);
+    if (options.data) {
+      req.write(options.data);
     }
     req.end();
   });
